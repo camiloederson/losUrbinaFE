@@ -1,43 +1,36 @@
-const CACHE_NAME = 'worldcup-v1';
+const CACHE_NAME = 'mundial-v2'; // Cambiamos a v2 para forzar al cel a actualizar
 const ASSETS = [
-  'predictor.html',
-  'manifest.json'
+  '/',
+  '/index.html',
+  '/styles.css', // ⚠️ ASEGÚRATE de que se llame EXACTAMENTE igual a tu archivo físico
+  '/app.js',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
-// Instalación del SW: Almacena los recursos estáticos estructurales
+// Instalar el Service Worker
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
-  );
-});
-
-// Activación del SW: Limpieza de cachés antiguas si las hay
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => {
+      // Usamos un bucle para que si un archivo falla, no arruine toda la instalación
       return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+        ASSETS.map(url => {
+          return cache.add(url).catch(err => console.log('Error cargando en caché:', url, err));
         })
       );
     })
   );
 });
 
-// Estrategia Network-First para asegurar que las consultas a Spring Boot traigan datos frescos
+// Procesar peticiones
 self.addEventListener('fetch', (e) => {
-  // Ignoramos las llamadas a la API de backend para que no se almacenen datos desactualizados en caché
-  if (e.request.url.includes('/api/')) {
-    return;
-  }
-  
   e.respondWith(
-    fetch(e.request).catch(() => {
-      return caches.match(e.request);
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    }).catch(() => {
+      // Si todo falla y estás offline, redirige a la raíz
+      return caches.match('/index.html');
     })
   );
 });
