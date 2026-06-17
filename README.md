@@ -2,8 +2,8 @@
 
 # Mundial 2026 Prediction Web App — Frontend (losUrbinaFE)
 
-![Predictions Mobile View](screenshots/predictions.png)
-![Leaderboard Mobile View](screenshots/results.png)
+![Predictions Mobile View](screenshots/predictions.jpeg)
+![Leaderboard Mobile View](screenshots/results.jpeg)
 
 This repository holds the user interface for **Mundial 2026 — losUrbina**, an interactive, mobile-first dashboard where friends can log predictions, view official scores, and check the live leaderboard.
 
