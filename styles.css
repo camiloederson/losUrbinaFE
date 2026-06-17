@@ -115,6 +115,12 @@ select, input[type="text"]{
   font-size:15px;
   flex: 1;
   min-width: 120px;
+  
+  /* Solución para evitar que textos largos rompan el viewport en móviles */
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 button{
@@ -184,21 +190,29 @@ body.sim-active .g-card {
   font-size:13px; color:var(--muted);
   display:grid; grid-template-columns:1fr 1fr; gap:4px 8px;
 }
+
 .g-pick { 
   display: flex; 
   gap: 8px; 
-  flex-direction: row; /* Por defecto a la par en pantallas grandes */
+  flex-direction: row;
 }
 
-/* 📱 Ajuste exclusivo para celulares (pantallas menores a 480px) */
+/* 📱 Ajuste estricto y responsivo para pantallas móviles */
 @media (max-width: 480px) {
   .g-pick {
-    flex-direction: column; /* Cambia a uno abajo del otro */
+    flex-direction: column !important;
     gap: 10px;
   }
   
   .g-pick label {
-    width: 100%; /* El selector se expande a todo el ancho de la tarjeta */
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  select {
+    width: 100% !important;
+    box-sizing: border-box;
   }
 }
 
