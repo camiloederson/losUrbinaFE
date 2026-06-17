@@ -1,11 +1,5 @@
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![PWA](https://img.shields.io/badge/PWA-purple?style=for-the-badge&logo=pwa&logoColor=white)
-![Netlify](https://img.shields.io/badge/Netlify-%2300C7B7.svg?style=for-the-badge&logo=netlify&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![PWA](https://img.shields.io/badge/PWA-purple?style=for-the-badge&logo=pwa&logoColor=white) ![Netlify](https://img.shields.io/badge/Netlify-%2300C7B7.svg?style=for-the-badge&logo=netlify&logoColor=white)
 
-## 📄 README.md para `losUrbinaFE` (Frontend)
-
-```markdown
 # Mundial 2026 Prediction Web App — Frontend (losUrbinaFE)
 
 ![Predictions Mobile View](./screenshots/predictions.png)
@@ -28,5 +22,5 @@ The Progressive Web App architecture caches all static assets (`index.html`, `st
 
 1. **Clone the project:**
    ```bash
-   git clone [https://github.com/camiloederson/losUrbinaFE.git]
+   git clone https://github.com/camiloederson/losUrbinaFE.git
    cd losUrbinaFE
