@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mundial-v2'; // Cambiamos a v2 para forzar al cel a actualizar
+const CACHE_NAME = 'mundial-v3'; // Cambiamos a v2 para forzar al cel a actualizar
 const ASSETS = [
   '/',
   '/index.html',
