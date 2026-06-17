@@ -115,8 +115,6 @@ select, input[type="text"]{
   font-size:15px;
   flex: 1;
   min-width: 120px;
-  
-  /* Solución para evitar que textos largos rompan el viewport en móviles */
   max-width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -191,27 +189,35 @@ body.sim-active .g-card {
   display:grid; grid-template-columns:1fr 1fr; gap:4px 8px;
 }
 
+/* Contenedor de las predicciones/resultados */
 .g-pick { 
   display: flex; 
   gap: 8px; 
   flex-direction: row;
 }
 
-/* 📱 Ajuste estricto y responsivo para pantallas móviles */
+/* 📱 SOLUCIÓN RADICAL PARA MÓVILES (Menos de 480px) */
 @media (max-width: 480px) {
   .g-pick {
-    flex-direction: column !important;
-    gap: 10px;
+    display: block !important; /* Destruye el flexbox horizontal por completo */
   }
   
   .g-pick label {
+    display: block !important;  /* Obliga a cada bloque (1º y 2º) a ir abajo del otro */
     width: 100% !important;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 12px;        /* Añade separación vertical limpia entre el 1º y el 2º lugar */
+  }
+
+  .g-pick label span {
+    display: block;             /* El texto "1º Lugar:" queda arriba de su propio select */
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: var(--muted);
   }
 
   select {
-    width: 100% !important;
+    display: block !important;
+    width: 100% !important;     /* El select ocupa todo el ancho de su línea */
     box-sizing: border-box;
   }
 }
