@@ -333,6 +333,7 @@ async function init(){
   });
 
   document.getElementById('savePredBtn').addEventListener('click', async ()=>{
+    if(e.target.hasAttribute('disabled')) return;
     if(!currentPlayer){
       document.getElementById('predStatus').textContent = 'Primero elige o agrega tu nombre.'; return;
     }
