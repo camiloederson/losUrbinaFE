@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mundial 2026 — Tabla de Aciertos</title>
+<meta name="theme-color" content="#0c2a1f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@500;700&display=swap');
+
+:root{
+  --bg:#0c2a1f;
+  --bg-alt:#133a2a;
+  --card:#163f2d;
+  --surface:#f6f1e6;
+  --ink:#0f2118;
+  --gold:#e7b23c;
+  --blue:#4ea7d6;
+  --coral:#ff6347;
+  --muted:#7fa190;
+  --line:rgba(247,241,230,0.1);
+  --purple:#8a2be2;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  background:var(--bg);
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 64px);
+  color:var(--surface);
+  font-family:'Inter', sans-serif;
+  min-height:100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app{ max-width:1080px; margin:0 auto; padding:16px 12px 60px; }
+
+header.marquee{
+  padding:16px 4px 14px;
+  text-align:center;
+  border-bottom:3px solid var(--gold);
+  margin-bottom:16px;
+}
+header.marquee h1{
+  font-family:'Oswald', sans-serif;
+  font-weight:700;
+  font-size: clamp(20px, 6vw, 32px);
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+header.marquee p{
+  color:var(--muted);
+  font-size:12.5px;
+  margin-bottom:14px;
+}
+
+.tabs{
+  display:flex;
+  justify-content: flex-start;
+  gap:6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom:4px;
+  -webkit-overflow-scrolling: touch;
+}
+@media(min-width: 600px) {
+  .tabs { justify-content: center; }
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab{
+  font-family:'Oswald', sans-serif;
+  font-size:12px;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  background:var(--bg-alt);
+  color:var(--surface);
+  border:1px solid var(--line);
+  padding:10px 14px;
+  cursor:pointer;
+  border-radius:4px;
+  flex: 1 0 auto;
+  text-align: center;
+}
+.tab.active{
+  background:var(--gold);
+  color:var(--ink);
+  border-color:var(--gold);
+  font-weight:600;
+}
+
+.panel{ display:none; }
+.panel.active{ display:block; }
+
+.hint{
+  color:var(--muted);
+  font-size:12.5px;
+  margin:12px 0;
+  line-height:1.4;
+}
+
+.player-bar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.player-bar label{ font-size:13px; color:var(--muted); }
+
+select, input[type="text"]{
+  font-family:'Inter', sans-serif;
+  background:var(--bg-alt);
+  color:var(--surface);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:10px 12px;
+  font-size:15px;
+  flex: 1;
+  min-width: 120px;
+}
+
+button{
+  font-family:'Inter', sans-serif;
+  cursor:pointer;
+  border:none;
+  border-radius:6px;
+  padding:10px 14px;
+  font-size:14px;
+  font-weight: 500;
+}
+
+#addPlayerBtn{
+  background:transparent;
+  color:var(--gold);
+  border:1px solid var(--gold);
+}
+
+.chips{ display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 16px; }
+.chip{
+  display:flex; align-items:center; gap:6px;
+  background:var(--bg-alt);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:6px 14px;
+  font-size:12px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:12px;
+  margin-bottom:20px;
+}
+
+@media(max-width: 360px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.g-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px;
+  transition: border-color 0.3s ease;
+}
+body.sim-active .g-card {
+  border-color: rgba(138, 43, 226, 0.4);
+}
+.g-head{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:8px;
+}
+.g-letter{
+  font-family:'Roboto Mono', monospace;
+  font-weight:700;
+  font-size:18px;
+  color:var(--gold);
+  border:1px solid var(--gold);
+  border-radius:4px;
+  width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.g-teamlist{
+  list-style:none; margin:0 0 10px; padding:0;
+  font-size:13px; color:var(--muted);
+  display:grid; grid-template-columns:1fr 1fr; gap:4px 8px;
+}
+
+.g-pick{ display:flex; gap:8px; }
+.g-pick label{ flex:1; display:flex; flex-direction:column; gap:4px; font-size:11px; color:var(--muted); }
+
+/* Área de controles de simulación */
+.sim-controls {
+  background: rgba(138, 43, 226, 0.15);
+  border: 1px dashed var(--purple);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@media(min-width: 600px) {
+  .sim-controls { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+.sim-badge {
+  background: var(--purple);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.btn-sim-toggle { background: var(--purple); color: white; font-weight: 600; }
+.btn-sim-off { background: var(--bg-alt); color: var(--surface); border: 1px solid var(--line); }
+
+.save-btn{
+  background:var(--coral);
+  color:#1a0d08;
+  font-weight:600;
+  width: 100%;
+  padding:14px;
+  font-size:15px;
+  letter-spacing:0.3px;
+  box-shadow: 0 4px 12px rgba(255,99,71,0.2);
+}
+.status{ display:block; margin-top:8px; text-align:center; font-size:13px; color:var(--gold); }
+
+/* Marcador */
+.legend{
+  font-size:12px; color:var(--muted); margin-bottom:14px; line-height:1.5;
+  background: var(--bg-alt); padding: 10px; border-radius: 6px;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; margin-bottom: 4px;}
+
+.lb-row{
+  display:flex;
+  align-items: center;
+  gap:10px;
+  padding:12px 6px;
+  border-bottom:1px solid var(--line);
+}
+.lb-rank{
+  font-family:'Roboto Mono', monospace;
+  font-weight:700;
+  font-size:15px;
+  width:24px;
+  color:var(--muted);
+  text-align:center;
+}
+.lb-row.rank-1 .lb-rank{ color:var(--gold); font-size:18px; }
+
+.lb-main{ flex:1; min-width:0; }
+.lb-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.lb-name{ font-family:'Oswald', sans-serif; font-size:15px; }
+.lb-pts{ font-family:'Roboto Mono', monospace; font-weight:700; font-size:17px; color:var(--gold); }
+.lb-pts span{ font-size:11px; color:var(--muted); font-family:'Inter', sans-serif;}
+
+.lb-bar-wrap{
+  background:var(--bg-alt);
+  border-radius:3px;
+  height:6px;
+  overflow:hidden;
+  margin-bottom:6px;
+}
+.lb-bar{
+  height:100%; width:0%;
+  background:linear-gradient(90deg, var(--gold), var(--coral));
+  transition:width 0.8s ease;
+}
+
+.lb-dots{ display:flex; gap:4px; flex-wrap:wrap; }
+.dot{
+  width:18px; height:18px;
+  border-radius:4px;
+  font-family:'Roboto Mono', monospace;
+  font-size:9px;
+  display:flex; align-items:center; justify-content:center;
+  color:rgba(0,0,0,0.7);
+  font-weight:700;
+}
+.dot.both{ background:var(--gold); }
+.dot.first{ background:var(--gold); opacity:0.75; }
+.dot.second{ background:var(--blue); color:#fff;}
+.dot.miss{ background:rgba(255,99,71,0.2); border:1px solid var(--coral); color:var(--coral); }
+.dot.pending{ background:var(--bg-alt); color:var(--muted); border:1px solid var(--line); }
+
+footer{ text-align:center; margin-top:40px; }
+#settingsToggle{ background:none; color:var(--muted); font-size:14px; }
+#settingsPanel{ margin-top:12px; }
+#settingsPanel.hidden{ display:none; }
+#resetBtn{
+  background:transparent; color:var(--coral); border:1px solid var(--coral); width: 100%; max-width: 300px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="marquee">
+    <h1>⚽ Mundial 2026 — losUrbina</h1>
+    <p>Predicciones y resultados en tiempo real 📊</p>
+    <div class="tabs">
+      <button class="tab active" data-tab="predicciones">Predicciones</button>
+      <button class="tab" data-tab="resultados">Resultados</button>
+      <button class="tab" data-tab="marcador">¿Cómo vamos?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="predicciones" class="panel active">
+      <p class="hint">Tus predicciones están fijadas una vez guardadas. Visca el Barça!</p>
+      <div class="player-bar">
+        <label for="playerSelect">Viendo a:</label>
+        <select id="playerSelect"></select>
+        <input type="text" id="newPlayerInput" placeholder="Nombre amigo" style="display:none;">
+        <button id="addPlayerBtn">+ Amigo</button>
+      </div>
+      <div id="playerChips" class="chips"></div>
+      <div id="predGrid" class="grid"></div>
+      <button id="savePredBtn" class="save-btn">Guardar mis predicciones</button>
+      <span id="predStatus" class="status"></span>
+    </section>
+
+    <section id="resultados" class="panel">
+      <!-- Módulo de Simulación de Escenarios -->
+      <div class="sim-controls">
+        <div>
+          <span class="sim-badge" id="simBadge">Modo: Oficial</span>
+          <p class="hint" style="margin: 4px 0 0;" id="simHint">Viendo los resultados reales del servidor. Modificar aquí abajo alterará la BD si guardas.</p>
+        </div>
+        <button id="simToggleBtn" class="btn-sim-toggle">Activar Modo Simulador 🧪</button>
+      </div>
+
+      <div id="resGrid" class="grid"></div>
+      <button id="saveResBtn" class="save-btn">Guardar resultados oficiales</button>
+      <span id="resStatus" class="status"></span>
+    </section>
+
+    <section id="marcador" class="panel">
+      <div id="simAlert" style="display:none; background:var(--purple); color:white; padding:8px; border-radius:6px; margin-bottom:12px; font-size:13px; text-align:center; font-weight:500;">
+        🔬 Estás viendo una SIMULACIÓN temporal. Los puntajes oficiales no han cambiado.
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot both"></span> 5pts</div>
+        <div class="legend-item"><span class="dot first"></span> 3pts (1º)</div>
+        <div class="legend-item"><span class="dot second"></span> 2pts (2º)</div>
+        <div class="legend-item"><span class="dot miss">💥</span> Falló</div>
+        <div class="legend-item"><span class="dot pending"></span> Pendiente</div>
+      </div>
+      <div id="leaderboard"></div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="settingsToggle">⚙ Ajustes de Servidor</button>
+    <div id="settingsPanel" class="hidden">
+      <button id="resetBtn">Borrar BD permanente</button>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+const GROUPS = {
+  A: ["México","Sudáfrica","Corea del Sur","Chequia"],
+  B: ["Canadá","Bosnia y Herzegovina","Catar","Suiza"],
+  C: ["Brasil","Marruecos","Haití","Escocia"],
+  D: ["Estados Unidos","Paraguay","Australia","Turquía"],
+  E: ["Alemania","Curazao","Costa de Marfil","Ecuador"],
+  F: ["Países Bajos","Japón","Suecia","Túnez"],
+  G: ["Bélgica","Egipto","Irán","Nueva Zelanda"],
+  H: ["España","Cabo Verde","Arabia Saudita","Uruguay"],
+  I: ["Francia","Senegal","Irak","Noruega"],
+  J: ["Argentina","Argelia","Austria","Jordania"],
+  K: ["Portugal","RD del Congo","Uzbekistán","Colombia"],
+  L: ["Inglaterra","Croacia","Ghana","Panamá"]
+};
+
+const FLAGS = {
+  "México":"🇲🇽","Sudáfrica":"🇿🇦","Corea del Sur":"🇰🇷","Chequia":"🇨🇿",
+  "Canadá":"🇨🇦","Bosnia y Herzegovina":"🇧🇦","Catar":"🇶🇦","Suiza":"🇨🇭",
+  "Brasil":"🇧🇷","Marruecos":"🇲🇦","Haití":"🇭🇹","Escocia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Estados Unidos":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turquía":"🇹🇷",
+  "Alemania":"🇩🇪","Curazao":"🇨🇼","Costa de Marfil":"🇨🇮","Ecuador":"🇪🇨",
+  "Países Bajos":"🇳🇱","Japón":"🇯🇵","Suecia":"🇸🇪","Túnez":"🇹🇳",
+  "Bélgica":"🇧🇪","Egipto":"🇪🇬","Irán":"🇮🇷","Nueva Zelanda":"🇳🇿",
+  "España":"🇪🇸","Cabo Verde":"🇨🇻","Arabia Saudita":"🇸🇦","Uruguay":"🇺🇾",
+  "Francia":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶","Noruega":"🇳🇴",
+  "Argentina":"🇦🇷","Argelia":"🇩🇿","Austria":"🇦🇹","Jordania":"🇯🇴",
+  "Portugal":"🇵🇹","RD del Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
+  "Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
+};
+
+const API_BASE_URL = "http://localhost:8080/api";
+let players = [];
+let currentPlayer = null;
+let isSimulationMode = false;
+let simulatedResults = {};
+
+async function getJSON(key, shared, fallback){
+  try{
+    if(isSimulationMode && key === 'actual_results') {
+      return simulatedResults;
+    }
+    if(key === 'players'){
+      const res = await fetch(`${API_BASE_URL}/players`);
+      if(res.ok) return await res.json();
+    }
+    if(key.startsWith('pred:')){
+      const name = key.split(':')[1];
+      const res = await fetch(`${API_BASE_URL}/players/${name}/predictions`);
+      if(res.ok) return await res.json();
+    }
+    if(key === 'actual_results'){
+      const res = await fetch(`${API_BASE_URL}/results`);
+      if(res.ok) return await res.json();
+    }
+    if(key === 'me'){
+      const localMe = localStorage.getItem('worldcup_me');
+      return localMe ? localMe : fallback;
+    }
+    return fallback;
+  }catch(e){
+    console.error("Error al obtener datos:", e);
+    return fallback;
+  }
+}
+
+async function setJSON(key, value, shared){
+  try{
+    if(isSimulationMode && key === 'actual_results') {
+      simulatedResults = value;
+      localStorage.setItem('worldcup_sim_results', JSON.stringify(value));
+      return true;
+    }
+    if(key.startsWith('pred:')){
+      const name = key.split(':')[1];
+      const res = await fetch(`${API_BASE_URL}/players/${name}/predictions`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(value)
+      });
+      return res.ok;
+    }
+    if(key === 'actual_results'){
+      const res = await fetch(`${API_BASE_URL}/results`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(value)
+      });
+      return res.ok;
+    }
+    if(key === 'me'){
+      if(value) localStorage.setItem('worldcup_me', value);
+      else localStorage.removeItem('worldcup_me');
+      return true;
+    }
+    return true;
+  }catch(e){
+    console.error("Error al guardar datos:", e);
+    return false;
+  }
+}
+
+function flag(team){ return FLAGS[team] ? FLAGS[team] + " " : ""; }
+
+function teamOptions(teams, selected){
+  let html = '<option value="">—</option>';
+  teams.forEach(t=>{
+    html += `<option value="${t}" ${t===selected?'selected':''}>${flag(t)}${t}</option>`;
+  });
+  return html;
+}
+
+function groupCard(group, prefix){
+  const teams = GROUPS[group];
+  return `
+    <div class="g-card" data-group="${group}">
+      <div class="g-head">
+        <span class="g-letter">${group}</span>
+      </div>
+      <ul class="g-teamlist">
+        ${teams.map(t=>`<li>${flag(t)}${t}</li>`).join('')}
+      </ul>
+      <div class="g-pick">
+        <label>1º
+          <select id="${prefix}-${group}-first">${teamOptions(teams, '')}</select>
+        </label>
+        <label>2º
+          <select id="${prefix}-${group}-second">${teamOptions(teams, '')}</select>
+        </label>
+      </div>
+    </div>`;
+}
+
+function buildGrid(containerId, prefix){
+  const el = document.getElementById(containerId);
+  el.innerHTML = Object.keys(GROUPS).map(g => groupCard(g, prefix)).join('');
+}
+
+function fillGrid(prefix, data){
+  Object.keys(GROUPS).forEach(g=>{
+    const d = (data && data[g]) || {};
+    const f = document.getElementById(`${prefix}-${g}-first`);
+    const s = document.getElementById(`${prefix}-${g}-second`);
+    if(f) f.value = d.first || '';
+    if(s) s.value = d.second || '';
+  });
+}
+
+function readGrid(prefix){
+  const out = {};
+  Object.keys(GROUPS).forEach(g=>{
+    const f = document.getElementById(`${prefix}-${g}-first`).value;
+    const s = document.getElementById(`${prefix}-${g}-second`).value;
+    if(f || s) out[g] = { first: f || null, second: s || null };
+  });
+  return out;
+}
+
+async function initPlayers(){
+  players = await getJSON('players', true, []);
+  currentPlayer = await getJSON('me', false, null);
+  if(!currentPlayer || !players.includes(currentPlayer)){
+    currentPlayer = players[0] || null;
+  }
+  renderPlayerSelect();
+  renderChips();
+}
+
+function renderPlayerSelect(){
+  const sel = document.getElementById('playerSelect');
+  sel.innerHTML = players.map(p=>`<option value="${p}" ${p===currentPlayer?'selected':''}>${p}</option>`).join('');
+}
+
+function renderChips(){
+  const wrap = document.getElementById('playerChips');
+  wrap.innerHTML = players.map(p=>`<span class="chip">${p}</span>`).join('');
+}
+
+async function loadCurrentPlayerPredictions(){
+  if(!currentPlayer){ fillGrid('p', {}); return; }
+  const data = await getJSON(`pred:${currentPlayer}`, true, {});
+  fillGrid('p', data);
+}
+
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===name));
+  
+  document.getElementById('simAlert').style.display = isSimulationMode ? 'block' : 'none';
+  if(name === 'marcador') renderLeaderboard();
+}
+
+function scoreFor(pred, actual){
+  const detail = {};
+  let pts = 0;
+  Object.keys(GROUPS).forEach(g=>{
+    const a = actual[g];
+    if(!a || !a.first || !a.second){ detail[g] = 'pending'; return; }
+    const p = pred[g];
+    if(!p){ detail[g] = 'miss'; return; }
+    
+    const predFirst = (p.first || '').trim().toLowerCase();
+    const predSecond = (p.second || '').trim().toLowerCase();
+    const actualFirst = (a.first || '').trim().toLowerCase();
+    const actualSecond = (a.second || '').trim().toLowerCase();
+
+    let g_pts = 0;
+    if(predFirst === actualFirst) g_pts += 3;
+    if(predSecond === actualSecond) g_pts += 2;
+    pts += g_pts;
+    detail[g] = g_pts === 5 ? 'both' : g_pts === 3 ? 'first' : g_pts === 2 ? 'second' : 'miss';
+  });
+  return { pts, detail };
+}
+
+function animateNumber(el, to, duration){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    el.textContent = to; return;
+  }
+  const start = performance.now();
+  function tick(now){
+    const t = Math.min(1, (now - start) / duration);
+    const val = Math.round(to * (1 - Math.pow(1 - t, 3)));
+    el.textContent = val;
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+async function renderLeaderboard(){
+  const box = document.getElementById('leaderboard');
+  if(!players.length){
+    box.innerHTML = `<div class="empty-state">Agrega amigos en la pestaña "Predicciones" para empezar.</div>`;
+    return;
+  }
+  const actual = await getJSON('actual_results', true, {});
+  const rows = [];
+  for(const name of players){
+    const pred = await getJSON(`pred:${name}`, true, {});
+    const { pts, detail } = scoreFor(pred, actual);
+    rows.push({ name, pts, detail });
+  }
+  rows.sort((a,b)=> b.pts - a.pts || a.name.localeCompare(b.name));
+  const maxPts = 60;
+
+  box.innerHTML = rows.map((r, i)=>`
+    <div class="lb-row rank-${i+1}">
+      <div class="lb-rank">${i+1}</div>
+      <div class="lb-main">
+        <div class="lb-top">
+          <span class="lb-name">${r.name}</span>
+          <span class="lb-pts" data-pts="${r.pts}">0<span>pts</span></span>
+        </div>
+        <div class="lb-bar-wrap"><div class="lb-bar" data-w="${(r.pts/maxPts*100).toFixed(1)}"></div></div>
+        <div class="lb-dots">
+          ${Object.keys(GROUPS).map(g=>`<span class="dot ${r.detail[g]}" title="Grupo ${g}: ${labelFor(r.detail[g])}">${g}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  requestAnimationFrame(()=>{
+    box.querySelectorAll('.lb-bar').forEach(bar=>{ bar.style.width = bar.dataset.w + '%'; });
+    box.querySelectorAll('.lb-pts').forEach(el=>{ animateNumber(el.firstChild ? el : el, parseInt(el.dataset.pts), 700); });
+  });
+}
+
+function labelFor(status){
+  return { both:'1º y 2º exactos', first:'1º correcto', second:'2º correcto', miss:'falló', pending:'pendiente' }[status] || status;
+}
+
+function setupValidation(containerId, prefix) {
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.addEventListener('change', (e) => {
+    if (e.target.id && e.target.id.startsWith(`${prefix}-`) && e.target.id.endsWith('-first')) {
+      const groupLetter = e.target.id.split('-')[1];
+      const firstPlaceSelected = e.target.value;
+      const secondSelect = document.getElementById(`${prefix}-${groupLetter}-second`);
+      
+      if (secondSelect) {
+        const currentSecondValue = secondSelect.value;
+        Array.from(secondSelect.options).forEach(option => {
+          option.disabled = (firstPlaceSelected && option.value === firstPlaceSelected);
+        });
+        if (currentSecondValue === firstPlaceSelected) { secondSelect.value = ''; }
+      }
+    }
+  });
+}
+
+async function init(){
+  buildGrid('predGrid', 'p');
+  buildGrid('resGrid', 'r');
+
+  setupValidation('predGrid', 'p');
+  setupValidation('resGrid', 'r');
+
+  await initPlayers();
+  await loadCurrentPlayerPredictions();
+
+  // Carga inicial de resultados reales
+  const actual = await getJSON('actual_results', true, {});
+  fillGrid('r', actual);
+
+  document.querySelectorAll('.tab').forEach(t=>{ t.addEventListener('click', ()=> showTab(t.dataset.tab)); });
+
+  document.getElementById('playerSelect').addEventListener('change', async (e)=>{
+    currentPlayer = e.target.value;
+    await setJSON('me', currentPlayer, false);
+    await loadCurrentPlayerPredictions();
+    document.getElementById('predStatus').textContent = '';
+  });
+
+  document.getElementById('addPlayerBtn').addEventListener('click', async () => {
+    const input = document.getElementById('newPlayerInput');
+    if(input.style.display === 'none'){
+      input.style.display = 'inline-block'; input.focus(); return;
+    }
+    const name = input.value.trim();
+    if(!name) return;
+    
+    if(!players.includes(name)){
+      players.push(name);
+      currentPlayer = name;
+      await setJSON('me', currentPlayer, false);
+      await setJSON(`pred:${name}`, {}, true); 
+      renderPlayerSelect();
+      renderChips();
+      await loadCurrentPlayerPredictions();
+    }
+    input.value = ''; input.style.display = 'none';
+  });
+
+  document.getElementById('savePredBtn').addEventListener('click', async ()=>{
+    if(!currentPlayer){
+      document.getElementById('predStatus').textContent = 'Primero elige o agrega tu nombre.'; return;
+    }
+    const data = readGrid('p');
+    const ok = await setJSON(`pred:${currentPlayer}`, data, true);
+    document.getElementById('predStatus').textContent = ok ? `Guardado ✓ (${currentPlayer})` : 'Error al guardar.';
+  });
+
+  // Manejo de guardado dinámico condicionado al modo simulador
+  document.getElementById('saveResBtn').addEventListener('click', async ()=>{
+    const data = readGrid('r');
+    if(isSimulationMode) {
+      await setJSON('actual_results', data, false);
+      document.getElementById('resStatus').textContent = 'Simulación actualizada en tu pantalla. ¡Ve a revisar el Marcador!';
+    } else {
+      const ok = await setJSON('actual_results', data, true);
+      document.getElementById('resStatus').textContent = ok ? 'Resultados Oficiales Guardados en Servidor ✓' : 'Error al guardar en el servidor.';
+    }
+  });
+
+  // Controlador de Activación/Desactivación del Simulador Local
+  const simToggleBtn = document.getElementById('simToggleBtn');
+  const simBadge = document.getElementById('simBadge');
+  const simHint = document.getElementById('simHint');
+  const saveResBtn = document.getElementById('saveResBtn');
+
+  simToggleBtn.addEventListener('click', async () => {
+    isSimulationMode = !isSimulationMode;
+    
+    if(isSimulationMode) {
+      document.body.classList.add('sim-active');
+      simBadge.textContent = "Modo: Simulador 🧪";
+      simBadge.style.background = "var(--purple)";
+      simHint.textContent = "Los cambios solo se guardan en tu teléfono. Juega con los resultados sin miedo.";
+      simToggleBtn.textContent = "Volver a Resultados Oficiales 🌍";
+      simToggleBtn.classList.add('btn-sim-off');
+      saveResBtn.textContent = "Aplicar simulación local";
+      saveResBtn.style.background = "var(--purple)";
+      saveResBtn.style.color = "white";
+
+      // Cargar caché local de simulación si existe, sino clonar el estado actual del formulario
+      const localSim = localStorage.getItem('worldcup_sim_results');
+      if(localSim) {
+        simulatedResults = JSON.parse(localSim);
+      } else {
+        simulatedResults = readGrid('r');
+      }
+      fillGrid('r', simulatedResults);
+    } else {
+      document.body.classList.remove('sim-active');
+      simBadge.textContent = "Modo: Oficial";
+      simBadge.style.background = "var(--purple)";
+      simHint.textContent = "Viendo los resultados reales del servidor. Modificar aquí abajo alterará la BD si guardas.";
+      simToggleBtn.textContent = "Activar Modo Simulador 🧪";
+      simToggleBtn.classList.remove('btn-sim-off');
+      saveResBtn.textContent = "Guardar resultados oficiales";
+      saveResBtn.style.background = "var(--coral)";
+      saveResBtn.style.color = "#1a0d08";
+
+      // Revertir la vista a los datos del servidor
+      isSimulationMode = false; // Desactivar temporal para la consulta real
+      const actualData = await getJSON('actual_results', true, {});
+      fillGrid('r', actualData);
+    }
+    document.getElementById('resStatus').textContent = '';
+  });
+
+  document.getElementById('settingsToggle').addEventListener('click', ()=>{
+    document.getElementById('settingsPanel').classList.toggle('hidden');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', async ()=>{
+    if(!confirm('¿Borrar permanentemente todos los datos de la base de datos?')) return;
+    try {
+      await fetch(`${API_BASE_URL}/players`, { method: 'DELETE' });
+      await fetch(`${API_BASE_URL}/results`, { method: 'DELETE' });
+      await setJSON('me', null, false);
+      localStorage.removeItem('worldcup_sim_results');
+      location.reload();
+    } catch(e) { console.error(e); }
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registrado', reg.scope))
+      .catch(err => console.error('Error SW', err));
+  });
+}
+
+init();
+</script>
+</body>
+</html>

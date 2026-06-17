@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mundial 2026 — Tabla de Aciertos</title>
+  <meta name="theme-color" content="#0c2a1f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="marquee">
+    <h1>⚽ Mundial 2026 — losUrbina</h1>
+    <p>Predicciones y resultados en tiempo real 📊</p>
+    <div class="tabs">
+      <button class="tab active" data-tab="predicciones">Predicciones</button>
+      <button class="tab" data-tab="resultados">Resultados</button>
+      <button class="tab" data-tab="marcador">¿Cómo vamos?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="predicciones" class="panel active">
+      <p class="hint">Tus predicciones están fijadas una vez guardadas. Visca el Barça!</p>
+      <div class="player-bar">
+        <label for="playerSelect">Viendo a:</label>
+        <select id="playerSelect"></select>
+        <input type="text" id="newPlayerInput" placeholder="Nombre amigo" style="display:none;">
+        <button id="addPlayerBtn">+ Amigo</button>
+      </div>
+      <div id="playerChips" class="chips"></div>
+      <div id="predGrid" class="grid"></div>
+      <button id="savePredBtn" class="save-btn">Guardar mis predicciones</button>
+      <span id="predStatus" class="status"></span>
+    </section>
+
+    <section id="resultados" class="panel">
+      <div class="sim-controls">
+        <div>
+          <span class="sim-badge" id="simBadge">Modo: Oficial 🔒</span>
+          <p class="hint" style="margin: 4px 0 0;" id="simHint">Viendo los resultados reales del servidor. Requiere contraseña para guardar.</p>
+        </div>
+        <button id="simToggleBtn" class="btn-sim-toggle">Activar Modo Simulador 🧪</button>
+      </div>
+
+      <div id="resGrid" class="grid"></div>
+      <button id="saveResBtn" class="save-btn">Guardar resultados oficiales</button>
+      <span id="resStatus" class="status"></span>
+    </section>
+
+    <section id="marcador" class="panel">
+      <div id="simAlert" style="display:none;" class="alert-sim">
+        🔬 Estás viendo una SIMULACIÓN temporal. Los puntajes oficiales no han cambiado.
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot both"></span> 5pts (Exacto)</div>
+        <div class="legend-item"><span class="dot first"></span> 3pts (1º Lugar)</div>
+        <div class="legend-item"><span class="dot second"></span> 2pts (2º Lugar)</div>
+        <div class="legend-item"><span class="dot miss"></span> Falló</div>
+        <div class="legend-item"><span class="dot pending"></span> Pendiente</div>
+      </div>
+      <div id="leaderboard"></div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="settingsToggle">⚙ Ajustes de Servidor</button>
+    <div id="settingsPanel" class="hidden">
+      <button id="resetBtn">Borrar BD permanente</button>
+    </div>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

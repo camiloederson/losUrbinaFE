@@ -1,0 +1,21 @@
+{
+  "short_name": "losUrbina",
+  "name": "Mundial 2026 — Polla losUrbina",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "predictor.html",
+  "background_color": "#0c2a1f",
+  "theme-color": "#0c2a1f",
+  "display": "standalone",
+  "orientation": "portrait"
+}
