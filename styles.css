@@ -114,7 +114,8 @@ select, input[type="text"]{
   padding:10px 12px;
   font-size:15px;
   flex: 1;
-  min-width: 120px;
+  min-width: 0; /* Cambiado de 120px a 0 para que pueda encogerse si es necesario */
+  width: 100%;
   max-width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -147,9 +148,10 @@ button{
   font-size:12px;
 }
 
+/* Ajustado el tamaño mínimo de las tarjetas de grupo */
 .grid{
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap:12px;
   margin-bottom:20px;
 }
@@ -162,15 +164,16 @@ button{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:8px;
-  padding:12px;
+  padding:14px; /* Un poco más de espacio interno */
   transition: border-color 0.3s ease;
+  overflow: hidden; /* Evita que cualquier hijo rompa la tarjeta */
 }
 body.sim-active .g-card {
   border-color: rgba(138, 43, 226, 0.4);
 }
 .g-head{
   display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:8px;
+  margin-bottom:12px;
 }
 .g-letter{
   font-family:'Roboto Mono', monospace;
@@ -184,41 +187,39 @@ body.sim-active .g-card {
 }
 
 .g-teamlist{
-  list-style:none; margin:0 0 10px; padding:0;
+  list-style:none; margin:0 0 14px; padding:0;
   font-size:13px; color:var(--muted);
-  display:grid; grid-template-columns:1fr 1fr; gap:4px 8px;
+  display:grid; grid-template-columns:1fr 1fr; gap:6px 8px;
 }
 
-/* Contenedor de las predicciones/resultados */
+/* 🛠️ ARREGLO GLOBAL: Cambiado a flex-direction: column por defecto */
 .g-pick { 
   display: flex; 
-  gap: 8px; 
-  flex-direction: row;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* 📱 SOLUCIÓN RADICAL PARA MÓVILES (Menos de 480px) */
-@media (max-width: 480px) {
+.g-pick label {
+  display: block;
+  width: 100%;
+}
+
+.g-pick label span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Cuando la pantalla sea lo suficientemente grande, si quieres los ponemos a la par, 
+   pero para evitar que se rompa con Bosnia, mejor dejamos que el flex-wrap trabaje solo */
+@media (min-width: 768px) {
   .g-pick {
-    display: block !important; /* Destruye el flexbox horizontal por completo */
+    flex-direction: row;
+    align-items: flex-end;
   }
-  
   .g-pick label {
-    display: block !important;  /* Obliga a cada bloque (1º y 2º) a ir abajo del otro */
-    width: 100% !important;
-    margin-bottom: 12px;        /* Añade separación vertical limpia entre el 1º y el 2º lugar */
-  }
-
-  .g-pick label span {
-    display: block;             /* El texto "1º Lugar:" queda arriba de su propio select */
-    margin-bottom: 4px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  select {
-    display: block !important;
-    width: 100% !important;     /* El select ocupa todo el ancho de su línea */
-    box-sizing: border-box;
+    flex: 1;
   }
 }
 
