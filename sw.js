@@ -1,8 +1,8 @@
-const CACHE_NAME = 'mundial-v3'; // Cambiamos a v2 para forzar al cel a actualizar
+const CACHE_NAME = 'mundial-v3'; 
 const ASSETS = [
   '/',
   '/index.html',
-  '/styles.css', // ⚠️ ASEGÚRATE de que se llame EXACTAMENTE igual a tu archivo físico
+  '/styles.css', 
   '/app.js',
   '/manifest.json',
   '/icon-192.png',
