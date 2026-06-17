@@ -25,7 +25,7 @@ const FLAGS = {
   "Francia":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶","Noruega":"🇳🇴",
   "Argentina":"🇦🇷","Argelia":"🇩🇿","Austria":"🇦🇹","Jordania":"🇯🇴",
   "Portugal":"🇵🇹","RD del Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
-  "Inglaterra":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
+  "Inglaterra":"🏴󠁧󠁢󠁥󠁮","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
 };
 
 const API_BASE_URL = "https://losurbinasbe.onrender.com/api";

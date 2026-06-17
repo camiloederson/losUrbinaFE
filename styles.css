@@ -184,9 +184,23 @@ body.sim-active .g-card {
   font-size:13px; color:var(--muted);
   display:grid; grid-template-columns:1fr 1fr; gap:4px 8px;
 }
+.g-pick { 
+  display: flex; 
+  gap: 8px; 
+  flex-direction: row; /* Por defecto a la par en pantallas grandes */
+}
 
-.g-pick{ display:flex; gap:8px; }
-.g-pick label{ flex:1; display:flex; flex-direction:column; gap:4px; font-size:11px; color:var(--muted); }
+/* 📱 Ajuste exclusivo para celulares (pantallas menores a 480px) */
+@media (max-width: 480px) {
+  .g-pick {
+    flex-direction: column; /* Cambia a uno abajo del otro */
+    gap: 10px;
+  }
+  
+  .g-pick label {
+    width: 100%; /* El selector se expande a todo el ancho de la tarjeta */
+  }
+}
 
 .sim-controls {
   background: rgba(138, 43, 226, 0.15);
