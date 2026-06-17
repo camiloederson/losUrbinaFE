@@ -33,6 +33,10 @@
         <input type="text" id="newPlayerInput" placeholder="Nombre amigo" style="display:none;">
         <button id="addPlayerBtn">+ Amigo</button>
       </div>
+      <div id="playerChips" class="chips"></div>
+      <div id="predGrid" class="grid"></div>
+      <button id="savePredBtn" class="save-btn" disabled>Guardar mis predicciones</button>
+      <span id="predStatus" class="status"></span>
     </section>
 
     <section id="resultados" class="panel">
@@ -63,6 +67,13 @@
       <div id="leaderboard"></div>
     </section>
   </main>
+
+  <footer>
+    <button id="settingsToggle">⚙ Ajustes de Servidor</button>
+    <div id="settingsPanel" class="hidden">
+      <button id="resetBtn">Borrar BD permanente</button>
+    </div>
+  </footer>
 
 </div>
 
