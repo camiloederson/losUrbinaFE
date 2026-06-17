@@ -4,7 +4,6 @@
 
 <p align="center">
   <img src="./screenshots/predictions.jpeg" alt="Predictions Mobile View" width="320" style="max-width:100%;" />
-  <img src="./screenshots/results.jpeg" alt="Leaderboard Mobile View" width="320" style="max-width:100%;" />
 </p>
 
 This repository holds the user interface for **Mundial 2026 — losUrbina**, an interactive, mobile-first dashboard where friends can log predictions, view official scores, and check the live leaderboard.
