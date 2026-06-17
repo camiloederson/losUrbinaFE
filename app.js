@@ -28,8 +28,8 @@ const FLAGS = {
   "Inglaterra":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
 };
 
-const API_BASE_URL = "http://localhost:8080/api";
-const SECRET_WORD = "losUrbinas"; // Santo y seña requerido
+const API_BASE_URL = "https://losurbinasbe.onrender.com/api";
+const SECRET_WORD = "losUrbinas";
 
 let players = [];
 let currentPlayer = null;
